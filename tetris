@@ -1,0 +1,69 @@
+import pygame
+from pygame.locals import *
+
+pygame.init()
+
+# set up the window
+DISPLAYSURF = pygame.display.set_mode((400, 600), 0, 32)
+pygame.display.set_caption('Drawing')
+
+# set up the colors
+BLACK = (  0,   0,   0)
+WHITE = (255, 255, 255)
+RED   = (255,   0,   0)
+GREEN = (  0, 255,   0)
+BLUE  = (  0,   0, 255)
+
+# variables
+x = 0
+y = 0
+MOVEEVENT = pygame.USEREVENT+1
+t = 1000
+pygame.time.set_timer(MOVEEVENT, t)
+
+DOWN = False
+
+# draw on the surface object
+#pygame.draw.polygon(DISPLAYSURF, GREEN, ((146, 0), (291, 106), (236, 277), (56, 277), (0, 106)))
+#pygame.draw.line(DISPLAYSURF, BLUE, (60, 60), (120, 60), 4)
+#pygame.draw.line(DISPLAYSURF, BLUE, (120, 60), (60, 120))
+#pygame.draw.line(DISPLAYSURF, BLUE, (60, 120), (120, 120), 4)
+#pygame.draw.circle(DISPLAYSURF, BLUE, (300, 50), 20, 0)
+#pygame.draw.ellipse(DISPLAYSURF, RED, (300, 200, 40, 80), 1)
+
+pixObj = pygame.PixelArray(DISPLAYSURF)
+pixObj[200][200] = BLACK
+pixObj[200][201] = BLACK
+pixObj[200][202] = BLACK
+pixObj[200][203] = BLACK
+pixObj[200][204] = BLACK
+#del pixObj
+#DISPLAYSURF = pygame.surfarray.make_surface(pixObj)
+
+# run the game loop
+while True:
+    for event in pygame.event.get():
+        if event.type == QUIT:
+            pygame.quit()
+            exit(0)
+        elif event.type == MOVEEVENT:
+            if y < 550:
+                y += 10
+        elif event.type == pygame.KEYDOWN:
+            if event.key == K_LEFT:
+                x -= 10
+            elif event.key == K_RIGHT:
+                x += 10
+            elif event.key == K_DOWN:
+                DOWN = True
+            elif event.key == K_UP:
+                y = 550
+        elif event.type == pygame.KEYUP:
+            if event.key == pygame.K_DOWN:
+                DOWN = False
+    if DOWN:
+        if y < 550:
+            y += 1
+    DISPLAYSURF.fill(WHITE)
+    pygame.draw.rect(DISPLAYSURF, RED, (x, y, 50, 50))
+    pygame.display.flip()
